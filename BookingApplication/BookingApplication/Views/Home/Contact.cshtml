@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Contact";
+}
+<body style="background-color:#DFF5FF">
+    <div class="container w-50 text-center">
+    <h1 class="display-4 text-info">Contact</h1>
+    <div class="card-group row-cols-xxl-6" style="margin-top:5rem">
+            <div class="col" style="margin-right:1rem">
+                <img src="~/Images/mobile.png" class="card-img-top" alt="phone_img">
+                <div class="card-body" style="background-color:#67C6E3">
+                <h5 class="card-title  text-light">Phone number:</h5><p class="text-light">0712 345 456 <br />0700 001 002</p>
+                </div>
+            </div>
+
+            <div class="col">
+                <img src="~/Images/letter.png" class="card-img-top" alt="email_img">
+                <div class="card-body" style="background-color:#67C6E3">
+                <h5 class="card-title  text-light">Our email addresses:</h5>
+                <p class="text-light">address1@address1<br />address2@address2</p>
+    
+                </div>
+            </div>
+    </div>
+    <form style="margin-top: 2rem">
+        <div class="form-group row">
+            <label for="emalAdress">Your email address</label>
+            <input type="email" class="form-control" >
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Describe your problem</label>
+            <textarea class="form-control" id="textarea"  rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+</body>

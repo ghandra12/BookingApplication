@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<body style="background-color:#DFF5FF">
+<div class="text-center">
+    <img class="rounded-circle border border-info" style="max-width:15%" src="~/Images/logo.jpg" />
+    <h1 class="display-4">What do you want to book today?</h1>
+    <br/>
+    <div class="card-group">
+            <a class="card text-decoration-none" asp-area="">
+            <div>
+                <img src="~/Images/restaurants.png" class="card-img-top" alt="Restaurant">
+                    <div class="card-body" style="background-color:#67C6E3">
+                        <h5 class="card-title  text-light">Restaurant</h5>
+                </div>
+            </div>
+        </a>
+           <a class="card text-decoration-none" asp-area="">
+            <div>
+                <img src="~/Images/barbershop.png" class="card-img-top" alt="Barbershop">
+                    <div class="card-body" style="background-color:#67C6E3">
+                        <h5 class="card-title  text-light">Barbershop</h5>
+                </div>
+            </div>
+        </a>
+            <a class="card text-decoration-none" asp-area="">
+            <div>
+                <img src="~/Images/cinema.png" class="card-img-top" alt="Cinema">
+                    <div class="card-body" style="background-color:#67C6E3">
+                    <h5 class="card-title text-light">Cinema</h5>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
+</body>
