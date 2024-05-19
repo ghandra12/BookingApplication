@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BookingApplication.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,17 +29,17 @@ namespace BookingApplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BarberShops",
+                name: "Barbershops",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImgPath = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BarberShops", x => x.Id);
+                    table.PrimaryKey("PK_Barbershops", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,6 +57,19 @@ namespace BookingApplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ContactMessages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ContactMessages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Restaurants",
                 columns: table => new
                 {
@@ -71,6 +84,46 @@ namespace BookingApplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BarbershopReservations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BarbershopId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartHour = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BarbershopReservations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BarbershopReservations_Barbershops_BarbershopId",
+                        column: x => x.BarbershopId,
+                        principalTable: "Barbershops",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CinemaReservations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CinemaId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartHour = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CinemaReservations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CinemaReservations_Cinemas_CinemaId",
+                        column: x => x.CinemaId,
+                        principalTable: "Cinemas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Bookings",
                 columns: table => new
                 {
@@ -80,7 +133,8 @@ namespace BookingApplication.Migrations
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     CinemaId = table.Column<int>(type: "int", nullable: true),
                     RestaurantId = table.Column<int>(type: "int", nullable: true),
-                    BarberShopId = table.Column<int>(type: "int", nullable: true)
+                    BarberShopId = table.Column<int>(type: "int", nullable: true),
+                    BarberShopId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -92,9 +146,9 @@ namespace BookingApplication.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bookings_BarberShops_BarberShopId",
-                        column: x => x.BarberShopId,
-                        principalTable: "BarberShops",
+                        name: "FK_Bookings_Barbershops_BarberShopId1",
+                        column: x => x.BarberShopId1,
+                        principalTable: "Barbershops",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Bookings_Cinemas_CinemaId",
@@ -109,6 +163,26 @@ namespace BookingApplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RestaurantReservations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RestaurantId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartHour = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RestaurantReservations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RestaurantReservations_Restaurants_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalTable: "Restaurants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
@@ -119,7 +193,8 @@ namespace BookingApplication.Migrations
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     CinemaId = table.Column<int>(type: "int", nullable: true),
                     RestaurantId = table.Column<int>(type: "int", nullable: true),
-                    BarberShopId = table.Column<int>(type: "int", nullable: true)
+                    BarberShopId = table.Column<int>(type: "int", nullable: true),
+                    BarberShopId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -131,9 +206,9 @@ namespace BookingApplication.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reviews_BarberShops_BarberShopId",
-                        column: x => x.BarberShopId,
-                        principalTable: "BarberShops",
+                        name: "FK_Reviews_Barbershops_BarberShopId1",
+                        column: x => x.BarberShopId1,
+                        principalTable: "Barbershops",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Reviews_Cinemas_CinemaId",
@@ -148,14 +223,19 @@ namespace BookingApplication.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_BarbershopReservations_BarbershopId",
+                table: "BarbershopReservations",
+                column: "BarbershopId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Bookings_AccountId",
                 table: "Bookings",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bookings_BarberShopId",
+                name: "IX_Bookings_BarberShopId1",
                 table: "Bookings",
-                column: "BarberShopId");
+                column: "BarberShopId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_CinemaId",
@@ -168,14 +248,24 @@ namespace BookingApplication.Migrations
                 column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CinemaReservations_CinemaId",
+                table: "CinemaReservations",
+                column: "CinemaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RestaurantReservations_RestaurantId",
+                table: "RestaurantReservations",
+                column: "RestaurantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_AccountId",
                 table: "Reviews",
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reviews_BarberShopId",
+                name: "IX_Reviews_BarberShopId1",
                 table: "Reviews",
-                column: "BarberShopId");
+                column: "BarberShopId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_CinemaId",
@@ -192,7 +282,19 @@ namespace BookingApplication.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "BarbershopReservations");
+
+            migrationBuilder.DropTable(
                 name: "Bookings");
+
+            migrationBuilder.DropTable(
+                name: "CinemaReservations");
+
+            migrationBuilder.DropTable(
+                name: "ContactMessages");
+
+            migrationBuilder.DropTable(
+                name: "RestaurantReservations");
 
             migrationBuilder.DropTable(
                 name: "Reviews");
@@ -201,7 +303,7 @@ namespace BookingApplication.Migrations
                 name: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "BarberShops");
+                name: "Barbershops");
 
             migrationBuilder.DropTable(
                 name: "Cinemas");

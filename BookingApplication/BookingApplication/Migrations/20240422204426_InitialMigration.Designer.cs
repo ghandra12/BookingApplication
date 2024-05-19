@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingApplication.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    [Migration("20240401182733_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240422204426_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,15 +56,17 @@ namespace BookingApplication.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("BookingApplication.Models.BarberShop", b =>
+            modelBuilder.Entity("BookingApplication.Models.Barbershop", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImgPath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -74,7 +76,30 @@ namespace BookingApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BarberShops");
+                    b.ToTable("Barbershops");
+                });
+
+            modelBuilder.Entity("BookingApplication.Models.BarbershopReservation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BarbershopId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StartHour")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BarbershopId");
+
+                    b.ToTable("BarbershopReservations");
                 });
 
             modelBuilder.Entity("BookingApplication.Models.Booking", b =>
@@ -91,6 +116,9 @@ namespace BookingApplication.Migrations
                     b.Property<int?>("BarberShopId")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("BarberShopId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
@@ -104,7 +132,7 @@ namespace BookingApplication.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("BarberShopId");
+                    b.HasIndex("BarberShopId1");
 
                     b.HasIndex("CinemaId");
 
@@ -134,6 +162,48 @@ namespace BookingApplication.Migrations
                     b.ToTable("Cinemas");
                 });
 
+            modelBuilder.Entity("BookingApplication.Models.CinemaReservation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CinemaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StartHour")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CinemaId");
+
+                    b.ToTable("CinemaReservations");
+                });
+
+            modelBuilder.Entity("BookingApplication.Models.Contact", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContactMessages");
+                });
+
             modelBuilder.Entity("BookingApplication.Models.Restaurant", b =>
                 {
                     b.Property<int>("Id")
@@ -155,6 +225,29 @@ namespace BookingApplication.Migrations
                     b.ToTable("Restaurants");
                 });
 
+            modelBuilder.Entity("BookingApplication.Models.RestaurantReservation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StartHour")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.ToTable("RestaurantReservations");
+                });
+
             modelBuilder.Entity("BookingApplication.Models.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -168,6 +261,9 @@ namespace BookingApplication.Migrations
 
                     b.Property<int?>("BarberShopId")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("BarberShopId1")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("CinemaId")
                         .HasColumnType("int");
@@ -185,13 +281,24 @@ namespace BookingApplication.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("BarberShopId");
+                    b.HasIndex("BarberShopId1");
 
                     b.HasIndex("CinemaId");
 
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("BookingApplication.Models.BarbershopReservation", b =>
+                {
+                    b.HasOne("BookingApplication.Models.Barbershop", "Barbershop")
+                        .WithMany()
+                        .HasForeignKey("BarbershopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Barbershop");
                 });
 
             modelBuilder.Entity("BookingApplication.Models.Booking", b =>
@@ -202,9 +309,9 @@ namespace BookingApplication.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookingApplication.Models.BarberShop", "BarberShop")
+                    b.HasOne("BookingApplication.Models.Barbershop", "BarberShop")
                         .WithMany()
-                        .HasForeignKey("BarberShopId");
+                        .HasForeignKey("BarberShopId1");
 
                     b.HasOne("BookingApplication.Models.Cinema", "Cinema")
                         .WithMany()
@@ -223,6 +330,28 @@ namespace BookingApplication.Migrations
                     b.Navigation("Restaurant");
                 });
 
+            modelBuilder.Entity("BookingApplication.Models.CinemaReservation", b =>
+                {
+                    b.HasOne("BookingApplication.Models.Cinema", "Cinema")
+                        .WithMany()
+                        .HasForeignKey("CinemaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cinema");
+                });
+
+            modelBuilder.Entity("BookingApplication.Models.RestaurantReservation", b =>
+                {
+                    b.HasOne("BookingApplication.Models.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+                });
+
             modelBuilder.Entity("BookingApplication.Models.Review", b =>
                 {
                     b.HasOne("BookingApplication.Models.Account", "Account")
@@ -231,9 +360,9 @@ namespace BookingApplication.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookingApplication.Models.BarberShop", "BarberShop")
+                    b.HasOne("BookingApplication.Models.Barbershop", "BarberShop")
                         .WithMany("Reviews")
-                        .HasForeignKey("BarberShopId");
+                        .HasForeignKey("BarberShopId1");
 
                     b.HasOne("BookingApplication.Models.Cinema", "Cinema")
                         .WithMany("Reviews")
@@ -259,7 +388,7 @@ namespace BookingApplication.Migrations
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("BookingApplication.Models.BarberShop", b =>
+            modelBuilder.Entity("BookingApplication.Models.Barbershop", b =>
                 {
                     b.Navigation("Reviews");
                 });

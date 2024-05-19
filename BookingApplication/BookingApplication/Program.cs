@@ -1,3 +1,6 @@
+using BookingApplication.Repositories;
+using BookingApplication.Repositories.Interfeces;
+using BookingApplication.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<BookingContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("BookingDb")));
+
+builder.Services.AddScoped<BarbershopService>();
+builder.Services.AddScoped<ContactService>();
+builder.Services.AddScoped<BarbershopReservationService>();
+builder.Services.AddScoped<IBarbershopRepository, BarbershopRepository>();
+builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

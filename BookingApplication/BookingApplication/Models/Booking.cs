@@ -11,7 +11,7 @@
         public Account Account { get; set; } = null!;
         public Cinema? Cinema { get; set; }
         public Restaurant? Restaurant { get; set; } 
-        public BarberShop? BarberShop { get; set; }
+        public Barbershop? BarberShop { get; set; }
 
     }
 }

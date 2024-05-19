@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Barbershop>
+@{
+    ViewData["Title"] = "Barbershop";
+}
+<div class="text-center">
+    <h1 class="display-4">Barbershops</h1>
+
+    <div style="padding-top: 25px">
+        <a href='@Url.Action("AddBarbershop", "Barbershop")'>AddBarbershop</a>
+        <a href='@Url.Action("DeleteBarbershop", "Barbershop")'>DeleteBarbershop</a>
+        <a href='@Url.Action("UpdateBarbershop", "Barbershop")'>UpdateBarbershop</a>
+    </div>
+
+    <div class="row g-2">
+        @foreach (var barbershop in Model)
+        {
+            <a class="card col-sm-4" asp-area="" asp-controller="Barbershop" asp-action="BarbershopReservation" asp-route-id="@barbershop.Id">
+                <div>
+                    <img src="@Url.Content(barbershop.ImgPath)" class="card-img-top" alt="@barbershop.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@barbershop.Name</h5>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+</div>

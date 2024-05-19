@@ -1,0 +1,25 @@
+﻿@model BookingApplication.Models.Barbershop
+@{
+    ViewData["Title"] = "UpdateBarbershop";
+    IEnumerable<Guid> ids = ViewData["BarbershopIds"] as IEnumerable<Guid>;
+}
+
+<div class="container w-50 text-center">
+    <h1 class="display-4">Update Barbershop</h1>
+    <form style="margin-top: 13rem" asp-controller="Barbershop" asp-action="UpdateBarbershop">
+
+        <select class="form-control" asp-for="Id"
+                asp-items="@(new SelectList(ids))">
+            <option>Please select barbershop id</option>
+        </select>
+        <div class="form-group" style="margin-top: 2rem">
+            <label for="barbershopName">New Barbershop Name</label>
+            <input class="form-control" type="text" asp-for="Name">
+        </div>
+        <div class="form-group">
+            <label for="barbershopImage">New Image Path</label>
+            <input class="form-control" type="text" asp-for="ImgPath">
+        </div>
+        <button style="margin-top: 3rem" type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
