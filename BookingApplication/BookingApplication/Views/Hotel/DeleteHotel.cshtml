@@ -1,0 +1,18 @@
+﻿@model BookingApplication.Models.Hotel
+@{
+    ViewData["Title"] = "DeleteHotel";
+    IEnumerable<int> ids = ViewData["HotelIds"] as IEnumerable<int>;
+}
+
+<div class="container w-50 text-center">
+    <h1 class="display-4">Delete Hotel</h1>
+    <form style="margin-top: 13rem" asp-controller="Hotel" asp-action="DeleteHotel" method="post">
+
+        <select class="form-control" asp-for="Id"
+                asp-items="@(new SelectList(ids))">
+            <option>Please select Hotel id</option>
+        </select>
+
+        <button style="margin-top: 3rem" type="submit" class="btn btn-primary">Delete</button>
+    </form>
+</div>

@@ -2,10 +2,10 @@
 
 namespace BookingApplication.Models
 {
-    public class CinemaReservation
+    public class HotelReservation
     {
         public Guid Id { get; set; }
-        public Cinema? Cinema { get; set; }
+        public Hotel? Hotel { get; set; }
         public Guid UserId { get; set; }
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }

@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using BookingApplication.Interfaces;
 using BookingApplication.Helper;
-using Microsoft.AspNet.Identity;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +19,18 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddScoped<BarbershopService>();
 builder.Services.AddScoped<ContactService>();
 builder.Services.AddScoped<BarbershopReservationService>();
+builder.Services.AddScoped<CinemaService>();
+builder.Services.AddScoped<RestaurantService>();
+builder.Services.AddScoped<RestaurantReservationService>();
+builder.Services.AddScoped<HotelService>();
+builder.Services.AddScoped<ReservationService>();
+builder.Services.AddScoped<HotelReservationService>();
+builder.Services.AddScoped<CinemaReservationService>();
 builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IBarbershopRepository, BarbershopRepository>();
+builder.Services.AddScoped<ICinemaRepository, CinemaRepository>();
+builder.Services.AddScoped<IHotelRepository, HotelRepository>();
+builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
 var app = builder.Build();

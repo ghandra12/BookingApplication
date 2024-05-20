@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Restaurant>
+@{
+    ViewData["Title"] = "Restaurant";
+}
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+
+<div class="text-center">
+    <h1 class="display-4">Restaurants</h1>
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+    {
+        <div style="padding-top: 25px">
+            <a href='@Url.Action("AddRestaurant", "Restaurant")'>AddRestaurant</a>
+            <a href='@Url.Action("DeleteRestaurant", "Restaurant")'>DeleteRestaurant</a>
+            <a href='@Url.Action("UpdateRestaurant", "Restaurant")'>UpdateRestaurant</a>
+        </div>
+    }
+
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+    {
+    <div class="row g-2">
+        @foreach (var Restaurant in Model)
+        {
+            <div class="card col-sm-4">
+                <div>
+                    <img src="@Url.Content(Restaurant.ImgPath)" class="card-img-top" alt="@Restaurant.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@Restaurant.Name</h5>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    }
+
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("User"))
+    {
+        <div class="row g-2">
+            @foreach (var Restaurant in Model)
+            {
+                <a class="card col-sm-4" asp-area="" asp-controller="Restaurant" asp-action="RestaurantReservation" asp-route-id="@Restaurant.Id">
+                    <div>
+                        <img src="@Url.Content(Restaurant.ImgPath)" class="card-img-top" alt="@Restaurant.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@Restaurant.Name</h5>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+</div>

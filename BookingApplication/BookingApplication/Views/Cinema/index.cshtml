@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Cinema>
+@{
+    ViewData["Title"] = "Cinema";
+}
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+
+<div class="text-center">
+    <h1 class="display-4">Cinemas</h1>
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+    {
+        <div style="padding-top: 25px">
+            <a href='@Url.Action("AddCinema", "Cinema")'>AddCinema</a>
+            <a href='@Url.Action("DeleteCinema", "Cinema")'>DeleteCinema</a>
+            <a href='@Url.Action("UpdateCinema", "Cinema")'>UpdateCinema</a>
+        </div>
+    }
+
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+    {
+    <div class="row g-2">
+        @foreach (var Cinema in Model)
+        {
+            <div class="card col-sm-4">
+                <div>
+                    <img src="@Url.Content(Cinema.ImgPath)" class="card-img-top" alt="@Cinema.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@Cinema.Name</h5>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    }
+
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("User"))
+    {
+        <div class="row g-2">
+            @foreach (var Cinema in Model)
+            {
+                <a class="card col-sm-4" asp-area="" asp-controller="Cinema" asp-action="CinemaReservation" asp-route-id="@Cinema.Id">
+                    <div>
+                        <img src="@Url.Content(Cinema.ImgPath)" class="card-img-top" alt="@Cinema.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@Cinema.Name</h5>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+</div>

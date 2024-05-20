@@ -1,0 +1,31 @@
+﻿@model BookingApplication.Models.RestaurantReservation
+@{
+    ViewData["Title"] = "RestaurantReservation";
+    Restaurant Restaurant = ViewData["Restaurant"] as Restaurant;
+}
+
+<div class="container w-50 text-center">
+    <h1 class="display-4">@Restaurant.Name</h1>
+    <form style="margin-top: 13rem" asp-controller="Restaurant" asp-action="RestaurantReservation" asp-route-id="@Restaurant.Id" method="post">
+
+        <div class="input-group mb-3" style="margin-top: 10rem;">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect03">Date</label>
+            </div>
+            <input class="custom-select" data-date-format="dd/mm/yyyy" id="datepicker" />
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect02">Hour</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect02" asp-for="StartHour">
+                <option selected>Choose...</option>
+                <option value="11:00">11:00</option>
+                <option value="14:00">14:00</option>
+                <option value="16:00">16:00</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-5 col-md-12">Book</button>
+    </form>
+</div>

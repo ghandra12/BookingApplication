@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Hotel>
+@{
+    ViewData["Title"] = "Hotel";
+}
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+
+<div class="text-center">
+    <h1 class="display-4">Hotels</h1>
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+    {
+        <div style="padding-top: 25px">
+            <a href='@Url.Action("AddHotel", "Hotel")'>AddHotel</a>
+            <a href='@Url.Action("DeleteHotel", "Hotel")'>DeleteHotel</a>
+            <a href='@Url.Action("UpdateHotel", "Hotel")'>UpdateHotel</a>
+        </div>
+    }
+
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+    {
+    <div class="row g-2">
+        @foreach (var Hotel in Model)
+        {
+            <div class="card col-sm-4">
+                <div>
+                    <img src="@Url.Content(Hotel.ImgPath)" class="card-img-top" alt="@Hotel.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@Hotel.Name</h5>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    }
+
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("User"))
+    {
+        <div class="row g-2">
+            @foreach (var Hotel in Model)
+            {
+                <a class="card col-sm-4" asp-area="" asp-controller="Hotel" asp-action="HotelReservation" asp-route-id="@Hotel.Id">
+                    <div>
+                        <img src="@Url.Content(Hotel.ImgPath)" class="card-img-top" alt="@Hotel.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@Hotel.Name</h5>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    }
+</div>

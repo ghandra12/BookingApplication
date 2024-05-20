@@ -1,0 +1,42 @@
+﻿@model List<ReservationListModel>
+@{
+    ViewData["Title"] = "Reservation";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Reservations</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Date
+                </th>
+                <th>Hour</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Date
+                    </td>
+                    <td>
+                        @item.StartHour
+                    </td>
+                    <td>
+                        @item.Type
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

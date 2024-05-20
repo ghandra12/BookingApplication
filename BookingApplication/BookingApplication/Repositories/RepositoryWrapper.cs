@@ -10,8 +10,88 @@ namespace BookingApplication.Repositories
         private IContactRepository? _contactRepository;
         private IBarbershopReservationRepository? _barbershopReservationRepository;
         private IBarbershopRepository? _barbershopRepository;
+        private ICinemaRepository? _cinemaRepository;
+        private ICinemaReservationRepository? _cinemaReservationRepository;
+        private IRestaurantRepository? _restaurantRepository;
+        private IRestaurantReservationRepository? _restaurantReservationRepository;
+        private IHotelRepository? _hotelRepository;
+        private IHotelReservationRepository? _hotelReservationRepository;
 
+        public IRestaurantReservationRepository RestaurantReservationRepository
+        {
+            get
+            {
+                if (_restaurantReservationRepository == null)
+                {
+                    _restaurantReservationRepository = new RestaurantReservationRepository(_bookingContext);
+                }
 
+                return _restaurantReservationRepository;
+            }
+        }
+        public ICinemaReservationRepository CinemaReservationRepository
+        {
+            get
+            {
+                if (_cinemaReservationRepository == null)
+                {
+                    _cinemaReservationRepository = new CinemaReservationRepository(_bookingContext);
+                }
+
+                return _cinemaReservationRepository;
+            }
+        }
+        public IRestaurantRepository RestaurantRepository
+        {
+            get
+            {
+                if (_restaurantRepository == null)
+                {
+                    _restaurantRepository = new RestaurantRepository(_bookingContext);
+                }
+
+                return _restaurantRepository;
+            }
+        }
+
+        public IHotelRepository HotelRepository
+        {
+            get
+            {
+                if (_hotelRepository == null)
+                {
+                    _hotelRepository = new HotelRepository(_bookingContext);
+                }
+
+                return _hotelRepository;
+            }
+        }
+
+        public IHotelReservationRepository HotelReservationRepository
+        {
+            get
+            {
+                if (_hotelReservationRepository == null)
+                {
+                    _hotelReservationRepository = new HotelReservationRepository(_bookingContext);
+                }
+
+                return _hotelReservationRepository;
+            }
+        }
+
+        public ICinemaRepository CinemaRepository
+        {
+            get
+            {
+                if (_cinemaRepository == null)
+                {
+                    _cinemaRepository = new CinemaRepository(_bookingContext);
+                }
+
+                return _cinemaRepository;
+            }
+        }
         public IAccountRepository AccountRepository
         {
             get
@@ -25,7 +105,6 @@ namespace BookingApplication.Repositories
             }
         }
 
-
         public IBarbershopRepository BarbershopRepository
         {
             get
@@ -38,6 +117,7 @@ namespace BookingApplication.Repositories
                 return _barbershopRepository;
             }
         }
+
         public IBarbershopReservationRepository BarbershopReservationRepository
         {
             get

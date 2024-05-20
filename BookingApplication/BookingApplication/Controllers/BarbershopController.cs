@@ -2,6 +2,7 @@
 using BookingApplication.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BookingApplication.Controllers
 {
@@ -38,13 +39,17 @@ namespace BookingApplication.Controllers
             {
                 return BadRequest();
             }
+            var usr = this.User;
+            Guid usId = Guid.Parse(usr.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier).Value);
+
             var barbershop = this.barbershopService.GetBarbershopById(id);
             this.barbershopReservationService.AddReservation(new BarbershopReservation()
             {
                 Id = Guid.NewGuid(),
                 Barbershop = barbershop,
                 Date = model.Date,
-                StartHour = model.StartHour
+                StartHour = model.StartHour,
+                UserId = usId,
             });
             return Redirect(Url.Action("Index", "Barbershop"));
         }

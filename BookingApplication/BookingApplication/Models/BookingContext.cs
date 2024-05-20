@@ -23,5 +23,6 @@ public class BookingContext : IdentityDbContext<IdentityUser>
     public DbSet<BarbershopReservation> BarbershopReservations { get; set; }
     public DbSet<CinemaReservation> CinemaReservations { get; set; }
     public DbSet<RestaurantReservation> RestaurantReservations { get; set; }
+    public DbSet<HotelReservation> HotelReservations { get; set; }
 
 }

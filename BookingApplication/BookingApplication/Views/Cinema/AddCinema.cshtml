@@ -1,0 +1,21 @@
+﻿@model BookingApplication.Models.Cinema
+@{
+    ViewData["Title"] = "AddCinema";
+}
+
+<div class="container w-50 text-center">
+    <h1 class="display-4">Add Cinema</h1>
+    <form style="margin-top: 8rem" asp-action="AddCinema" method="post">
+        <div class="form-group">
+            <label for="CinemaName">Cinema Name</label>
+            <input class="form-control" type="text" asp-for="Name">
+        </div>
+        <div class="form-group">
+            <label for="CinemaImage">Image Path</label>
+            <input class="form-control" type="text" asp-for="ImgPath">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+</div>
+
