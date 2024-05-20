@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using BookingApplication.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -21,11 +21,13 @@ namespace BookingApplication.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IAuthorizationService _authorizationService;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, IAuthorizationService authorizationService)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _authorizationService = authorizationService;
         }
 
         /// <summary>
@@ -111,7 +113,7 @@ namespace BookingApplication.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _authorizationService.LoginAsync(Input.Email, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");

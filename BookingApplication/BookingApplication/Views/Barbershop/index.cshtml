@@ -2,26 +2,52 @@
 @{
     ViewData["Title"] = "Barbershop";
 }
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+
 <div class="text-center">
     <h1 class="display-4">Barbershops</h1>
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+    {
+        <div style="padding-top: 25px">
+            <a href='@Url.Action("AddBarbershop", "Barbershop")'>AddBarbershop</a>
+            <a href='@Url.Action("DeleteBarbershop", "Barbershop")'>DeleteBarbershop</a>
+            <a href='@Url.Action("UpdateBarbershop", "Barbershop")'>UpdateBarbershop</a>
+        </div>
+    }
 
-    <div style="padding-top: 25px">
-        <a href='@Url.Action("AddBarbershop", "Barbershop")'>AddBarbershop</a>
-        <a href='@Url.Action("DeleteBarbershop", "Barbershop")'>DeleteBarbershop</a>
-        <a href='@Url.Action("UpdateBarbershop", "Barbershop")'>UpdateBarbershop</a>
-    </div>
-
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("Admin"))
+    {
     <div class="row g-2">
         @foreach (var barbershop in Model)
         {
-            <a class="card col-sm-4" asp-area="" asp-controller="Barbershop" asp-action="BarbershopReservation" asp-route-id="@barbershop.Id">
+            <div class="card col-sm-4">
                 <div>
                     <img src="@Url.Content(barbershop.ImgPath)" class="card-img-top" alt="@barbershop.Name">
                     <div class="card-body">
                         <h5 class="card-title">@barbershop.Name</h5>
                     </div>
                 </div>
-            </a>
+            </div>
         }
     </div>
+    }
+
+    @if (SignInManager.IsSignedIn(User) && UserManager.GetRolesAsync(UserManager.GetUserAsync(User).Result).Result.Contains("User"))
+    {
+        <div class="row g-2">
+            @foreach (var barbershop in Model)
+            {
+                <a class="card col-sm-4" asp-area="" asp-controller="Barbershop" asp-action="BarbershopReservation" asp-route-id="@barbershop.Id">
+                    <div>
+                        <img src="@Url.Content(barbershop.ImgPath)" class="card-img-top" alt="@barbershop.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@barbershop.Name</h5>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    }
 </div>

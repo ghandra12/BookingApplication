@@ -3,6 +3,10 @@ using BookingApplication.Repositories.Interfeces;
 using BookingApplication.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using BookingApplication.Interfaces;
+using BookingApplication.Helper;
+using Microsoft.AspNet.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +21,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddScoped<BarbershopService>();
 builder.Services.AddScoped<ContactService>();
 builder.Services.AddScoped<BarbershopReservationService>();
+builder.Services.AddScoped<IAuthorizationService, AuthorizationService>();
 builder.Services.AddScoped<IBarbershopRepository, BarbershopRepository>();
 builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
@@ -38,8 +43,15 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
+name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var userManager = services.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<IdentityUser>>();
+    DbInitializer.Initialize(services, userManager).Wait();
+}
 
 app.MapRazorPages();
 app.Run();
