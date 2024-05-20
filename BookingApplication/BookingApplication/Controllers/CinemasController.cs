@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BookingApplication.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookingApplication.Controllers
 {
+    [Authorize]
     public class CinemasController : Controller
     {
         private readonly BookingContext _context;

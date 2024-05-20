@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookingApplication.Controllers
 {
+    [Authorize]
     public class BarbershopController : Controller
     {
         private readonly BarbershopService barbershopService;
